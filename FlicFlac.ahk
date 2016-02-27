@@ -1,9 +1,9 @@
-VersionString := "1.02"
+VersionString := "1.03"
 ;-------------------------------------------------------------------------------
 ;
-;  FlicFlac 1.02
+;  FlicFlac
 ;  Tiny Portable Audio Converter (WAV MP3 FLAC OGG APE)
-;  by Danny Ben Shitrit 2013
+;  by Danny Ben Shitrit 2016
 ;  ---------------------------------------------------------------------------
 ; 
 ;  This is a simple utility for converting WAV, FLAC, MP3 and OGG files into any 
@@ -170,8 +170,9 @@ Main:
   StringSplit InFormat, InFormats, |
 
   Gui Margin, 4,4
-  Gui -Theme
+  ; Gui -Theme
   Gui +OwnDialogs
+  Gui +ToolWindow
   Gui Color, EEEEEE,DDDDDD
   Gui Font, s10, MS Sans Serif
   Gui Add, Button, %FlatButtons% w110 h136 section Default vGuiMainBtn gSelectFilesBtn, % " &Select or`nDrop Files"
@@ -199,7 +200,7 @@ Main:
   If( GuiAlwaysOnTop ) {
     Gui +AlwaysOnTop
     If( StartInactiveWhenOnTop )
-      NAString := "-NA"
+      NAString := "NoActivate"
   }  
   Gui Show,x%WinX% y%WinY% %NAString%,%NameString%
   

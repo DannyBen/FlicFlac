@@ -120,6 +120,8 @@ Change Log
     2016 02 27 - 1.03
       Changed: Icon, courtesy of Jastria Rahmat (ijash)
       Changed: License to MIT
+      Updated: Some minor code tweaks to support newer AutoHotkey version
+      Updated: UI to allow use of Windows theme and act as a tool window
 
     2013 08 16 - 1.02
       Changed: MP3 to MP3 conversion will no longer offer to delete the input file
