@@ -80,8 +80,10 @@ Init:
   IniRead ExitAfterContextMenu,%IniFile%, General, ExitAfterContextMenu, 1
   IniRead OpenFolderWhenDone , %IniFile%, General, OpenFolderWhenDone, 0
   IniRead StartInactiveWhenOnTop, %IniFile%, General, StartInactiveWhenOnTop, 1
+  IniRead ClassicTheme       , %IniFile%, General, ClassicTheme, 0
+  IniRead ToolWindow         , %IniFile%, General, ToolWindow, 1
   IniRead IniArtist          , %IniFile%, General, Artist, % ""
-  IniRead FlatButtons        , %IniFile%, General, FlatButtons, 0
+  IniRead FlatButtons        , %IniFile%, General, FlatButtons, 1
   FlatButtons := FlatButtons ? "0x8000" : ""
   
   IniRead EncMode,        %IniFile%, MP3, Mode, CBR
@@ -169,10 +171,15 @@ Main:
   StringSplit InFileFilter, InFileFilters, |
   StringSplit InFormat, InFormats, |
 
+  If( ClassicTheme ) {
+    Gui -Theme
+  }
+  If( ToolWindow ) {
+    Gui +ToolWindow
+  }
+
   Gui Margin, 4,4
-  ; Gui -Theme
   Gui +OwnDialogs
-  Gui +ToolWindow
   Gui Color, EEEEEE,DDDDDD
   Gui Font, s10, MS Sans Serif
   Gui Add, Button, %FlatButtons% w110 h136 section Default vGuiMainBtn gSelectFilesBtn, % " &Select or`nDrop Files"
@@ -201,7 +208,8 @@ Main:
     Gui +AlwaysOnTop
     If( StartInactiveWhenOnTop )
       NAString := "NoActivate"
-  }  
+  }
+
   Gui Show,x%WinX% y%WinY% %NAString%,%NameString%
   
 Return
