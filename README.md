@@ -7,6 +7,8 @@ Download binary: <http://sector-seven.net/software/flicflac>
 
 --------------------------------------------------
 
+![FlicFlac](/DannyBen/FlicFlac/blob/master/Screenshot.png?raw=true "Screenshot")
+
 
 Introduction
 --------------------------------------------------
