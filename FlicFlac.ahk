@@ -399,12 +399,12 @@ GetCommandLine( contype ) {
 
   clMP32APE   = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
   clFLAC2APE  = "%FlacLocation%" %FlacOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
-	clOGG2APE   = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
-	
-	clAPE2MP3   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
-	clAPE2OGG   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
-	clAPE2FLAC  = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
-	
+  clOGG2APE   = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
+  
+  clAPE2MP3   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
+  clAPE2OGG   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
+  clAPE2FLAC  = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
+  
   ; Special Case MP3 to MP3
   clMP32MP3  = "%ComSpec%" /c copy "`%Filename`%" "%TmpFilename%.mp3"`n"%LameLocation%" %LameOptions% "%TmpFilename%.mp3" "`%NameNoExt`%.mp3"`nMP3
 
@@ -615,7 +615,7 @@ BuildMenu:
   Menu Main, Add, Open &INI File, OpenINI
   Menu Main, Add
   If( FileExist( "Readme.txt" ) )
-		Menu Main, Add, View &Readme File, Readme
+    Menu Main, Add, View &Readme File, Readme
   Menu Main, Add, &About, About
 Return
 
@@ -739,19 +739,19 @@ Return
 
 About:
   Gui 1:+OwnDialogs
-	msg = %NameString% v%VersionString%`nby Danny Ben Shitrit`nSector Seven`n`nwww.sector-seven.net  
-	Answer := CMsgBox( "About FlicFlac", msg, "*&Close|&Homepage|&Twitter", "I", 1 )
-	
-	If( Answer == "Homepage" )
-		Run http://sector-seven.net/
-	Else If( Answer == "Twitter" )
-		Run http://twitter.com/DannyBens
+  msg = %NameString% v%VersionString%`nby Danny Ben Shitrit`nSector Seven`n`nwww.sector-seven.net  
+  Answer := CMsgBox( "About FlicFlac", msg, "*&Close|&Homepage|&Twitter", "I", 1 )
+  
+  If( Answer == "Homepage" )
+    Run http://sector-seven.net/
+  Else If( Answer == "Twitter" )
+    Run http://twitter.com/DannyBens
 
 Return
 
 Readme:
-	If( FileExist( "Readme.txt" ) )
-		Run Readme.txt
+  If( FileExist( "Readme.txt" ) )
+    Run Readme.txt
 Return
 
 FixCoordinates( ByRef WinX, ByRef WinY ) {
@@ -851,23 +851,23 @@ Exit:
 Return
 
 IsAdmin() {
-	if( !A_IsAdmin ) {
-		Gui 1:+OwnDialogs
-		MsgBox 68,Administrator Rights Needed,This action requires administrator rights.`n`nWould you like to run FlicFlac as Administrator?
-		IfMsgBox Yes
-		{
-			If( A_IsCompiled )
-				DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_ScriptFullPath
-					, str, """" . """", str, A_WorkingDir, int, 1)
-			Else
-				DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_AhkPath
-					, str, """" . A_ScriptFullPath . """", str, A_WorkingDir, int, 1)
-			ExitApp
-		}
-		Else
-			Return false
-	}
-	Return true
+  if( !A_IsAdmin ) {
+    Gui 1:+OwnDialogs
+    MsgBox 68,Administrator Rights Needed,This action requires administrator rights.`n`nWould you like to run FlicFlac as Administrator?
+    IfMsgBox Yes
+    {
+      If( A_IsCompiled )
+        DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_ScriptFullPath
+          , str, """" . """", str, A_WorkingDir, int, 1)
+      Else
+        DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_AhkPath
+          , str, """" . A_ScriptFullPath . """", str, A_WorkingDir, int, 1)
+      ExitApp
+    }
+    Else
+      Return false
+  }
+  Return true
 }
 
 
@@ -876,7 +876,7 @@ IsAdmin() {
 ;-------------------------------------------------------------------------------
 InstallContextMenu:
   If( !IsAdmin() ) {
-		Return 
+    Return 
   }
   
   If( A_IsCompiled )
@@ -902,7 +902,7 @@ Return
 
 UninstallContextMenu:
   If( !IsAdmin() ) {
-		Return 
+    Return 
   }
   
   Loop %OutFormat0% {
