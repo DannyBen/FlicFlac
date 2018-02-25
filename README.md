@@ -77,29 +77,29 @@ Technical Notes
   Year       = Current year  
   Artist     = Taken from the INI file  
 - Native Conversions (one step):  
-  1.  WAV2MP3   WAV to MP3  (lame)
-  2.  MP32WAV   MP3 to WAV  (lame)
-  3,  FLAC2WAV  FLAC to WAV (flac)
-  4.  WAV2FLAC  WAV to FLAC (flac)
-  5.  WAV2OGG   WAV to OGG  (oggenc)
-  6.  FLAC2OGG  WAV to FLAC (oggenc)
-  7.  OGG2WAV   OGG to WAV  (oggdec)
-  8.  WAV2APE   WAV to APE  (mac)
-  9.  APE2WAV   APE to WAV  (mac)
+    - WAV2MP3   WAV to MP3  (lame)
+    - MP32WAV   MP3 to WAV  (lame)
+    - FLAC2WAV  FLAC to WAV (flac)
+    - WAV2FLAC  WAV to FLAC (flac)
+    - WAV2OGG   WAV to OGG  (oggenc)
+    - FLAC2OGG  WAV to FLAC (oggenc)
+    - OGG2WAV   OGG to WAV  (oggdec)
+    - WAV2APE   WAV to APE  (mac)
+    - APE2WAV   APE to WAV  (mac)
 - Hybrid Conversions (two steps):
-  10. FLAC2MP3  FLAC to WAV (flac)   then WAV to MP3  (lame) 
-  11. FLAC2APE  FLAC to APE (flac)   then WAV to APE  (mac) 
-  12. MP32FLAC  MP3 to WAV  (lame)   then WAV to FLAC (flac) 
-  13. MP32OGG   MP3 to WAV  (lame)   then WAV to OGG  (oggenc)
-  14. MP32APE   MP3 to WAV  (lame)   then WAV to APE  (mac) 
-  15. OGG2FLAC  OGG to WAV  (oggdec) then WAV to FLAC (flac)
-  16. OGG2MP3   OGG to WAV  (oggdec) then WAV to MP3  (lame)   
-  17. OGG2APE   OGG to APE  (oggdec) then WAV to APE  (mac) 
-  18. APE2MP3   APE to WAV  (mac)    then WAV to MP3  (lame) 
-  19. APE2OGG   APE to WAV  (mac)    then WAV to OGG  (oggenc) 
-  20. APE2FLAC  APE to WAV  (mac)    then WAV to FLAC (flac) 
+    - FLAC2MP3  FLAC to WAV (flac)   then WAV to MP3  (lame) 
+    - FLAC2APE  FLAC to APE (flac)   then WAV to APE  (mac) 
+    - MP32FLAC  MP3 to WAV  (lame)   then WAV to FLAC (flac) 
+    - MP32OGG   MP3 to WAV  (lame)   then WAV to OGG  (oggenc)
+    - MP32APE   MP3 to WAV  (lame)   then WAV to APE  (mac) 
+    - OGG2FLAC  OGG to WAV  (oggdec) then WAV to FLAC (flac)
+    - OGG2MP3   OGG to WAV  (oggdec) then WAV to MP3  (lame)   
+    - OGG2APE   OGG to APE  (oggdec) then WAV to APE  (mac) 
+    - APE2MP3   APE to WAV  (mac)    then WAV to MP3  (lame) 
+    - APE2OGG   APE to WAV  (mac)    then WAV to OGG  (oggenc) 
+    - APE2FLAC  APE to WAV  (mac)    then WAV to FLAC (flac) 
 - MP3 Bitrate Conversion
-  21. Also supported, MP3 to MP3 - to convert to a different bitrate.
+    - Also supported, MP3 to MP3 - to convert to a different bitrate.
 
 
 License
