@@ -3,7 +3,7 @@ FlicFlac 1.03
 
 Tiny Portable Audio Converter (WAV FLAC MP3 OGG APE)  
 
-Download binary: <http://sector-seven.net/software/flicflac>
+Download binary: <http://sector-seven.com/software/flicflac>
 
 --------------------------------------------------
 
