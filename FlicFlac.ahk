@@ -763,13 +763,13 @@ Return
 
 About:
   Gui 1:+OwnDialogs
-  msg = %NameString% v%VersionString%`nby Danny Ben Shitrit`nSector Seven`n`nwww.sector-seven.net  
-  Answer := CMsgBox( "About FlicFlac", msg, "*&Close|&Homepage|&Twitter", "I", 1 )
+  msg = %NameString% v%VersionString%`nby Danny Ben Shitrit`nSector Seven`n`nwww.sector-seven.com  
+  Answer := CMsgBox( "About FlicFlac", msg, "*&Close|&Homepage|&GitHub", "I", 1 )
   
   If( Answer == "Homepage" )
-    Run http://sector-seven.net/
-  Else If( Answer == "Twitter" )
-    Run http://twitter.com/DannyBens
+    Run https://www.sector-seven.com/
+  Else If( Answer == "GitHub" )
+    Run https://github.com/DannyBen
 
 Return
 

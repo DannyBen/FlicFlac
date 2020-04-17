@@ -129,9 +129,10 @@ Contributors
 Change Log
 --------------------------------------------------
 
-    2020 04 16 - 1.10
+    2020 04 17 - 1.10
       Added  : Support for AAC and M4A (input only) using faad
       Fixed  : Run as Administrator when enabling/disabling shell integration
+      Changed: Links in About dialog
       
     2016 02 27 - 1.03
       Changed: Icon, courtesy of Jastria Rahmat (ijash)
