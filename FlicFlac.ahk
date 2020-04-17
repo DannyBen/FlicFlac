@@ -2,7 +2,7 @@ VersionString := "1.10"
 ;-------------------------------------------------------------------------------
 ;
 ;  FlicFlac
-;  Tiny Portable Audio Converter (WAV MP3 FLAC OGG APE M4A)
+;  Tiny Portable Audio Converter (WAV MP3 FLAC OGG APE M4A AAC)
 ;  by Danny Ben Shitrit
 ;  https://github.com/DannyBen/FlicFlac
 ;  ---------------------------------------------------------------------------

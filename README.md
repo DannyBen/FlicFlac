@@ -26,7 +26,7 @@ It uses these external command line encoders/decoders:
 
 If you redistribute this package please refer to the license of these encoders.
 
-On the first run, FlicFlac will create small INI file for you to do some
+On the first run, FlicFlac will create a small INI file for you to do some
 minor configurations if needed, and will also spit out the four needed 
 converters into the windows temp directory (flac.exe, lame.exe, oggenc.exe 
 and oggdec.exe).
