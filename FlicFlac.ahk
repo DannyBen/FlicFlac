@@ -1,13 +1,14 @@
-VersionString := "1.03"
+VersionString := "1.10"
 ;-------------------------------------------------------------------------------
 ;
 ;  FlicFlac
-;  Tiny Portable Audio Converter (WAV MP3 FLAC OGG APE)
-;  by Danny Ben Shitrit 2016
+;  Tiny Portable Audio Converter (WAV MP3 FLAC OGG APE M4A)
+;  by Danny Ben Shitrit
+;  https://github.com/DannyBen/FlicFlac
 ;  ---------------------------------------------------------------------------
 ; 
-;  This is a simple utility for converting WAV, FLAC, MP3 and OGG files into any 
-;  of the other formats.
+;  This is a simple utility for converting WAV, FLAC, MP3, OGG, APE, M4A
+;  and AAC files into any of the other formats.
 ;
 ;  It requires these command line executables: 
 ;  - flac.exe (FLAC converter)
@@ -24,6 +25,9 @@ VersionString := "1.03"
 ;
 ;  - MAC.exe (APE converter)
 ;    http://www.monkeysaudio.com/
+;
+;  - faad.exe (M4A/AAC converter)
+;    https://www.rarewares.org/aac-decoders.php
 ;  
 ;  The external executables are only needed for the non compiled script. 
 ;  The compiled version of this script will swallow all external files, and will 
@@ -76,7 +80,7 @@ Init:
   ; Read some INI configs  
   IniRead AbortOnError       , %IniFile%, General, AbortOnError, 1
   IniRead SupressErrors      , %IniFile%, General, SupressErrors, 0
-  IniRead ConfirmBeforeDelete, %IniFile%, General, ConfirmBeforeDelete, FLAC,WAV,MP3,OGG
+  IniRead ConfirmBeforeDelete, %IniFile%, General, ConfirmBeforeDelete, FLAC,WAV,MP3,OGG,APE,M4A,AAC
   IniRead ExitAfterContextMenu,%IniFile%, General, ExitAfterContextMenu, 1
   IniRead OpenFolderWhenDone , %IniFile%, General, OpenFolderWhenDone, 0
   IniRead StartInactiveWhenOnTop, %IniFile%, General, StartInactiveWhenOnTop, 1
@@ -106,6 +110,7 @@ Init:
   IniRead LameOptionsDec,  %IniFile%, Advanced, LameOptionsDec
   IniRead OggOptions,      %IniFile%, Advanced, OggOptions
   IniRead OggOptionsDec,   %IniFile%, Advanced, OggOptionsDec
+  IniRead FaadOptions,     %IniFile%, Advanced, FaadOptions
   IniRead TempFolder,      %IniFile%, Advanced, TempFolder
   Transform TempFolder, Deref, %TempFolder%
   
@@ -131,6 +136,7 @@ Init:
   LameLocation   := TempFolder . "\lame.exe"      
   OggEncLocation := TempFolder . "\oggenc.exe"
   OggDecLocation := TempFolder . "\oggdec.exe"
+  FaadLocation   := TempFolder . "\faad.exe"
   
   ; Install encoders
   FileInstall MAC.exe, %ApeLocation%
@@ -138,6 +144,7 @@ Init:
   FileInstall lame.exe, %LameLocation%
   FileInstall oggenc.exe, %OggEncLocation%
   FileInstall oggdec.exe, %OggDecLocation%
+  FileInstall faad.exe, %FaadLocation%
   
   ; Make sure we can find our command line converters
   ErrString := ""
@@ -151,6 +158,8 @@ Init:
     ErrString .= "Missing oggdec.exe (" . OggDecLocation . ")`n"
   If( Not FileExist( ApeLocation ) )
     ErrString .= "Missing MAC.exe (" . MacLocation . ")`n"
+  If( Not FileExist( FaadLocation ) )
+    ErrString .= "Missing faad.exe (" . FaadLocation . ")`n"
     
   If( ErrString ) {
     ErrorMessage( "Some files that are required for the operation of " . NameString . " are missing.`n`n" . ErrString )
@@ -163,13 +172,15 @@ Return
 
 
 Main:
+  InFormats     := "FLAC|WAV|MP3|OGG|APE|M4A|AAC"
   OutFormats    := "FLAC|WAV|MP3|OGG|APE"
-  InFormats     := "[wav][mp3][ogg][ape]|[flac][mp3][ogg][ape]|[wav][flac][ogg][ape][mp3]|[wav][flac][mp3][ape]|[wav][flac][mp3][ogg]"
-  InFileFilters := "WAV, MP3, OGG or APE (*.wav; *.mp3; *.ogg; *.ape)|FLAC, MP3, OGG or APE (*.flac; *.mp3; *.ogg; *.ape)|WAV, FLAC, OGG, MP3 or APE (*.wav; *.flac; *.ogg; *.mp3; *.ape)|WAV, FLAC, MP3 or APE (*.wav; *.flac; *.mp3; *.ape)|WAV, FLAC, MP3 or OGG (*.wav; *.flac; *.mp3; *.ogg)"
+  InExtensions  := "[wav][mp3][ogg][ape][m4a][aac]|[flac][mp3][ogg][ape][m4a][aac]|[wav][flac][ogg][ape][mp3][m4a][aac]|[wav][flac][mp3][ape][m4a][aac]|[wav][flac][mp3][ogg][m4a][aac]"
+  InFileFilters := "Audio to FLAC (*.wav; *.mp3; *.ogg; *.ape; *.m4a; *.aac)|Audio to WAV (*.flac; *.mp3; *.ogg; *.ape; *.m4a; *.aac)|Audio to MP3 (*.wav; *.flac; *.ogg; *.mp3; *.ape; *.m4a; *.aac)|Audio to OGG (*.wav; *.flac; *.mp3; *.ape; *.m4a; *.aac)|Audio to APE (*.wav; *.flac; *.mp3; *.ogg; *.m4a; *.aac)"
   
   StringSplit OutFormat, OutFormats, |
   StringSplit InFileFilter, InFileFilters, |
   StringSplit InFormat, InFormats, |
+  StringSplit InExtension, InExtensions, |
 
   If( ClassicTheme ) {
     Gui -Theme
@@ -182,7 +193,7 @@ Main:
   Gui +OwnDialogs
   Gui Color, EEEEEE,DDDDDD
   Gui Font, s10, MS Sans Serif
-  Gui Add, Button, %FlatButtons% w110 h136 section Default vGuiMainBtn gSelectFilesBtn, % " &Select or`nDrop Files"
+  Gui Add, Button, %FlatButtons% w110 h136 section Default vGuiMainBtn gSelectFilesBtn, % "&Select or`nDrop Files"
   Gui Font, s9 
   Gui Add, Radio, %FlatButtons% +0x1000 x+4 yp w70 h24 -Wrap Checked vGuiOutFormat, % "to &" . OutFormat1
   Gui Add, Radio, %FlatButtons% +0x1000 wp hp -Wrap                         , % "to &" . OutFormat2
@@ -221,7 +232,7 @@ Return
 SelectFilesBtn:
   Gui Submit, NoHide
   If( MenuMode or Files := SelectFiles( BaseDir, InFileFilter%GuiOutFormat% ) ) {
-    Files := CleanFileList( Files, InFormat%GuiOutFormat% )
+    Files := CleanFileList( Files, InExtension%GuiOutFormat% )
     Convert( Files, OutFormat%GuiOutFormat%, GuiDeleteInput )
     If( MenuMode ) {
       If( ExitAfterContextMenu )
@@ -250,7 +261,7 @@ GuiDropFiles:
   }
   
   If( A_GuiControl = "GuiMainBtn" or RegExMatch( A_GuiControl, "^to |GuiOutFormat" ) ) {
-    Files := CleanFileList( ExpandFileList( Files ), InFormat%GuiOutFormat% )
+    Files := CleanFileList( ExpandFileList( Files ), InExtension%GuiOutFormat% )
     Convert( Files, OutFormat%GuiOutFormat%, GuiDeleteInput )
     If( MenuMode ) {
       MenuMode := false
@@ -371,6 +382,7 @@ GetCommandLine( contype ) {
   ; command line.
 
   Global FlacOptions, FlacOptionsDec, FlacLocation, LameLocation, ApeLocation
+  Global FaadLocation, FaadOptions
   Global LameOptionsVBR, LameOptionsCBR, LameOptionsDec, EncMode, ApeCompression
   Global OggEncLocation, OggDecLocation, OggOptions, OggOptionsDec
   Global TmpFilename
@@ -379,35 +391,47 @@ GetCommandLine( contype ) {
   
   ; Native
   clWAV2MP3   = "%LameLocation%" %LameOptions% "`%Filename`%" "`%NameNoExt`%.mp3"
+  clWAV2OGG   = "%OggEncLocation%" %OggOptions% "`%Filename`%"
+  clWAV2APE   = "%ApeLocation%" "`%Filename`%" "`%NameNoExt`%.ape" -c%ApeCompression%
+  clWAV2FLAC  = "%FlacLocation%" %FlacOptions% "`%Filename`%"
   clMP32WAV   = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "`%NameNoExt`%.wav"
   clFLAC2WAV  = "%FlacLocation%" %FlacOptionsDec% "`%Filename`%"
-  clWAV2FLAC  = "%FlacLocation%" %FlacOptions% "`%Filename`%"
-  clWAV2OGG   = "%OggEncLocation%" %OggOptions% "`%Filename`%"
   clFLAC2OGG  = "%OggEncLocation%" %OggOptions% "`%Filename`%"
   clOGG2WAV   = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%"
-  clWAV2APE   = "%ApeLocation%" "`%Filename`%" "`%NameNoExt`%.ape" -c%ApeCompression%
   clAPE2WAV   = "%ApeLocation%" "`%Filename`%" "`%NameNoExt`%.wav" -d
-  
+  clM4A2WAV   = "%FaadLocation%" %FaadOptions% -o "`%NameNoExt`%.wav" "`%Filename`%" 
+  clAAC2WAV   = "%FaadLocation%" %FaadOptions% -o "`%NameNoExt`%.wav" "`%Filename`%" 
+
   ; HYBRIDS, return two command lines and the extension of the temporary convert
   ; We could have used a combination of the above, but we want to use a file with 
-  ; a temporary name for as the first output (and second input)
+  ; a temporary name for the first output (and second input)
   clFLAC2MP3  = "%FlacLocation%" %FlacOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
+  clFLAC2APE  = "%FlacLocation%" %FlacOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
+  
   clMP32FLAC  = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "%TmpFilename%.wav"`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
   clMP32OGG   = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "%TmpFilename%.wav"`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
+  clMP32APE   = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
+  
   clOGG2FLAC  = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
   clOGG2MP3   = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
-
-  clMP32APE   = "%LameLocation%" %LameOptionsDec% "`%Filename`%" "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
-  clFLAC2APE  = "%FlacLocation%" %FlacOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
   clOGG2APE   = "%OggDecLocation%" %OggOptionsDec% "`%Filename`%" -o "%TmpFilename%.wav"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
   
   clAPE2MP3   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
   clAPE2OGG   = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
   clAPE2FLAC  = "%ApeLocation%" "`%Filename`%" "%TmpFilename%.wav" -d`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
+
+  ; M4A2* and AAC2* are the same
+  clM4A2FLAC  = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
+  clAAC2FLAC  = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%FlacLocation%" %FlacOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.flac"`nWAV
+  clM4A2MP3   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
+  clAAC2MP3   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%LameLocation%" %LameOptions% "%TmpFilename%.wav" "`%NameNoExt`%.mp3"`nWAV
+  clM4A2OGG   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
+  clAAC2OGG   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%OggEncLocation%" %OggOptions% "%TmpFilename%.wav" -o "`%NameNoExt`%.ogg"`nWAV
+  clM4A2APE   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
+  clAAC2APE   = "%FaadLocation%" %FaadOptions% -o "%TmpFilename%.wav" "`%Filename`%"`n"%ApeLocation%" "%TmpFilename%.wav" "`%NameNoExt`%.ape" -c%ApeCompression%`nWAV
   
   ; Special Case MP3 to MP3
   clMP32MP3  = "%ComSpec%" /c copy "`%Filename`%" "%TmpFilename%.mp3"`n"%LameLocation%" %LameOptions% "%TmpFilename%.mp3" "`%NameNoExt`%.mp3"`nMP3
-
   
   Return cl%contype%
 }
@@ -839,13 +863,14 @@ Return
 Exit:
   Gosub PreExit
   
-  ; Clean the temp flac.exe and lame.exe
+  ; Clean the temp binaries
   If( A_IsCompiled and CleanupOnExit ) {
     FileDelete %ApeLocation%
     FileDelete %FlacLocation%
     FileDelete %LameLocation%
     FileDelete %OggDecLocation%
     FileDelete %OggEncLocation%
+    FileDelete %FaadLocation%
   }
   ExitApp
 Return
@@ -857,11 +882,9 @@ IsAdmin() {
     IfMsgBox Yes
     {
       If( A_IsCompiled )
-        DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_ScriptFullPath
-          , str, """" . """", str, A_WorkingDir, int, 1)
+        Run *RunAs "%A_ScriptFullPath%"
       Else
-        DllCall("shell32\ShellExecuteA", uint, 0, str, "RunAs", str, A_AhkPath
-          , str, """" . A_ScriptFullPath . """", str, A_WorkingDir, int, 1)
+        Run *RunAs "%A_AhkPath%" "%A_ScriptFullPath%"
       ExitApp
     }
     Else
@@ -884,8 +907,8 @@ InstallContextMenu:
   Else
     MenuCommand = "%A_AhkPath%" "%A_ScriptDir%\%A_ScriptName%" "`%1"
     
-  Loop %OutFormat0% {
-    Success := CM_AddMenuItem( OutFormat%A_Index%, "Convert with &FlicFlac", MenuCommand )
+  Loop %InFormat0% {
+    Success := CM_AddMenuItem( InFormat%A_Index%, "Convert with &FlicFlac", MenuCommand )
     If( !Success ) {
       ErrorMessage( "Unable to install shell integration.`n`nPlease run FlicFlac as administrator." )
       break

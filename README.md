@@ -1,4 +1,4 @@
-FlicFlac 1.03
+FlicFlac 1.10
 ==================================================
 
 Tiny Portable Audio Converter (WAV FLAC MP3 OGG APE)  
@@ -13,8 +13,8 @@ Download binary: <http://sector-seven.com/software/flicflac>
 Introduction
 --------------------------------------------------
 
-This is a simple utility for converting WAV, FLAC, MP3, APE and OGG files to
-any of the other formats.
+This is a simple utility for converting WAV, FLAC, MP3, APE, OGG, M4A and AAC files to
+any of the other formats (except M4A and AAC that are only supported as input format).
 
 It uses these external command line encoders/decoders:
 
@@ -22,11 +22,11 @@ It uses these external command line encoders/decoders:
 - [lame.exe (MP3 converter)](http://www.rarewares.org/mp3-lame-bundle.php#lame-current) - Lame Release Bundle
 - [oggenc.exe and oggdec.exe (OGG converter)](http://www.vorbis.com/files/1.0.1/windows/vorbis-tools-1.0.1-win32.zip)
 - [MAC.exe (APE converter)](http://www.monkeysaudio.com/)
+- [faad.exe (M4A and AAC converter)](https://www.rarewares.org/aac-decoders.php)
 
-If you redistribute this package please refer to the license of these 
-encoders.
+If you redistribute this package please refer to the license of these encoders.
 
-On the first run, FlicFlac will spit out a small INI file for you to do some
+On the first run, FlicFlac will create small INI file for you to do some
 minor configurations if needed, and will also spit out the four needed 
 converters into the windows temp directory (flac.exe, lame.exe, oggenc.exe 
 and oggdec.exe).
@@ -39,16 +39,16 @@ Usage
 
 - Select a conversion format by pressing one of the format buttons.
 - Press the Select button to select files to convert.
-    
+  
 ### Method 2:
 
 - Select a conversion format by pressing one of the format buttons.
 - Drag files or folders onto the Select button.
-    
+  
 ### Method 3:
 
 - Drag files or folders onto one of the format buttons.
-    
+  
 ### Method 4:
 
 - Right click a file and select Convert with FlicFlac.
@@ -77,27 +77,37 @@ Technical Notes
   Year       = Current year  
   Artist     = Taken from the INI file  
 - Native Conversions (one step):  
-    - WAV2MP3   WAV to MP3  (lame)
-    - MP32WAV   MP3 to WAV  (lame)
-    - FLAC2WAV  FLAC to WAV (flac)
-    - WAV2FLAC  WAV to FLAC (flac)
-    - WAV2OGG   WAV to OGG  (oggenc)
-    - FLAC2OGG  WAV to FLAC (oggenc)
-    - OGG2WAV   OGG to WAV  (oggdec)
-    - WAV2APE   WAV to APE  (mac)
-    - APE2WAV   APE to WAV  (mac)
+    - **WAV2MP3**   WAV to MP3 (lame)
+    - **MP32WAV**   MP3 to WAV  (lame)
+    - **FLAC2WAV**  FLAC to WAV (flac)
+    - **WAV2FLAC**  WAV to FLAC (flac)
+    - **WAV2OGG**   WAV to OGG  (oggenc)
+    - **FLAC2OGG**  WAV to FLAC (oggenc)
+    - **OGG2WAV**   OGG to WAV  (oggdec)
+    - **WAV2APE**   WAV to APE  (mac)
+    - **APE2WAV**   APE to WAV  (mac)
+    - **M4A2WAV**   M4A to WAV (faad)
+    - **AAC2WAV**   AAC to WAV (faad)
 - Hybrid Conversions (two steps):
-    - FLAC2MP3  FLAC to WAV (flac)   then WAV to MP3  (lame) 
-    - FLAC2APE  FLAC to APE (flac)   then WAV to APE  (mac) 
-    - MP32FLAC  MP3 to WAV  (lame)   then WAV to FLAC (flac) 
-    - MP32OGG   MP3 to WAV  (lame)   then WAV to OGG  (oggenc)
-    - MP32APE   MP3 to WAV  (lame)   then WAV to APE  (mac) 
-    - OGG2FLAC  OGG to WAV  (oggdec) then WAV to FLAC (flac)
-    - OGG2MP3   OGG to WAV  (oggdec) then WAV to MP3  (lame)   
-    - OGG2APE   OGG to APE  (oggdec) then WAV to APE  (mac) 
-    - APE2MP3   APE to WAV  (mac)    then WAV to MP3  (lame) 
-    - APE2OGG   APE to WAV  (mac)    then WAV to OGG  (oggenc) 
-    - APE2FLAC  APE to WAV  (mac)    then WAV to FLAC (flac) 
+    - **FLAC2MP3**  FLAC to WAV (flac)   then WAV to MP3  (lame) 
+    - **FLAC2APE**  FLAC to WAV (flac)   then WAV to APE  (mac) 
+    - **MP32FLAC**  MP3 to WAV  (lame)   then WAV to FLAC (flac) 
+    - **MP32OGG**   MP3 to WAV  (lame)   then WAV to OGG  (oggenc)
+    - **MP32APE**   MP3 to WAV  (lame)   then WAV to APE  (mac) 
+    - **OGG2FLAC**  OGG to WAV  (oggdec) then WAV to FLAC (flac)
+    - **OGG2MP3**   OGG to WAV  (oggdec) then WAV to MP3  (lame)   
+    - **OGG2APE**   OGG to WAV  (oggdec) then WAV to APE  (mac) 
+    - **APE2MP3**   APE to WAV  (mac)    then WAV to MP3  (lame) 
+    - **APE2OGG**   APE to WAV  (mac)    then WAV to OGG  (oggenc) 
+    - **APE2FLAC**  APE to WAV  (mac)    then WAV to FLAC (flac) 
+    - **M4A2FLAC**  M4A to WAV  (faad)   then WAV to FLAC (flac)
+    - **M4A2MP3**   M4A to WAV  (faad)   then WAV to MP3  (lame)
+    - **M4A2OGG**   M4A to WAV  (faad)   then WAV to OGG  (oggenc)
+    - **M4A2APE**   M4A to WAV  (faad)   then WAV to APE  (mac) 
+    - **AAC2FLAC**  AAC to WAV  (faad)   then WAV to FLAC (flac)
+    - **AAC2MP3**   AAC to WAV  (faad)   then WAV to MP3  (lame)
+    - **AAC2OGG**   AAC to WAV  (faad)   then WAV to OGG  (oggenc)
+    - **AAC2APE**   AAC to WAV  (faad)   then WAV to APE  (mac) 
 - MP3 Bitrate Conversion
     - Also supported, MP3 to MP3 - to convert to a different bitrate.
 
@@ -119,40 +129,44 @@ Contributors
 Change Log
 --------------------------------------------------
 
+    2020 04 16 - 1.10
+      Added  : Support for AAC and M4A (input only) using faad
+      Fixed  : Run as Administrator when enabling/disabling shell integration
+      
     2016 02 27 - 1.03
       Changed: Icon, courtesy of Jastria Rahmat (ijash)
       Changed: License to MIT
       Updated: Some minor code tweaks to support newer AutoHotkey version
       Updated: UI to allow use of Windows theme and act as a tool window
-
+    
     2013 08 16 - 1.02
       Changed: MP3 to MP3 conversion will no longer offer to delete the input file
-
+    
     2011 03 09 - 1.01
       Added  : Support for MP3 to MP3 conversion (bitrate change).
       Changed: About dialog.
-
+    
     2011 01 07 - 1.00
       Added  : Support for Monkey's Audio APE format
-
+    
     2010 12 14 - 0.36
       Fixed  : Shell integration did not work in some cases.
       Updated: Shell integration now sensitive to UAC.
       Changed: Minor GUI changes to better fit Windows 7
       Changed: Default ID3 artist in INI file is now empty
       Updated: Lame MP3 version to 3.98.4
-
+    
     2009 10 06 - 0.32
       Updated: Lame version to 3.98.2.
-
+    
     2009 06 22 - 0.31
       Changed: Recompiled with AutoHotkey 1.0.48.02 due to AVG reporting false
                positive with older AHK version.
-
+    
     2009 06 09 - 0.30
       Added  : Configuration in INI to enable/disable flat buttons. (thanks Dr. 
                Drips).
-
+    
     2008 12 11 - 0.29
       Fixed  : Context menu integration was installed on startup even without user 
                request. Also caused the "Disable Shell Integration" option to be
@@ -161,14 +175,14 @@ Change Log
       Added  : "Always on top" checkbox.
       Added  : Option in INI to choose if you want the window to start inactive or
                not, when Always on Top is enabled.
-
+    
     2008 12 09 - 0.28
       Added  : Context menu integration. May be enabled or disabled from the 
                settings menu. Currently supports only single files. No support for 
                multi-files selection or folders.
                When a conversion is done through the context menu, FlicFlac will 
                exit when its done (may be changed in the INI file).
-
+    
     2008 12 03 - 0.27
       Fixed  : Ogg encoders were not cleaned on exit.
       Fixed  : Ogg encoders were not tested for existence.
@@ -180,11 +194,11 @@ Change Log
       Added  : CleanupOnExit is now configurable (allows to delete the encoders
                on exit).
       Added  : All encoder options are now configurable.
-
+    
     2008 12 03 - 0.26
       Added  : Support for OGG files using OggTools 1.0.1
       Changed: Buttons to flat
-
+    
     2008 08 31 - 0.25
       Changed: Minor maintenance release - removed tray icon.
       
@@ -245,10 +259,10 @@ Change Log
       Changed: !!! IMPORTANT !!! Delete Input File checkbox is now working the 
                same in all file formats (i.e. we will also delete FLAC and WAV 
                files when it is checked).          
-
+    
     2008 05 28 - 0.14
       Added  : Support for VBR encoding for MP3 (thanks Tom de Rooy).
-
+    
     2008 05 28 - 0.13
       Fixed  : Dragging over non-button control was still attempting to convert.
                No damage was done, since we did not know which conversion to do, 
