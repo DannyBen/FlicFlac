@@ -16,7 +16,7 @@ Introduction
 This is a simple utility for converting WAV, FLAC, MP3, APE, OGG, M4A and AAC files to
 any of the other formats (except M4A and AAC that are only supported as input format).
 
-It uses these external command line encoders/decoders:
+It uses these external command line encoders/decoders (included in the package):
 
 - [flac.exe (FLAC converter)](http://sourceforge.net/project/showfiles.php?group_id=13478&package_id=12675) - flac-win.zip
 - [lame.exe (MP3 converter)](http://www.rarewares.org/mp3-lame-bundle.php#lame-current) - Lame Release Bundle
@@ -27,9 +27,9 @@ It uses these external command line encoders/decoders:
 If you redistribute this package please refer to the license of these encoders.
 
 On the first run, FlicFlac will create a small INI file for you to do some
-minor configurations if needed, and will also spit out the four needed 
-converters into the windows temp directory (flac.exe, lame.exe, oggenc.exe 
-and oggdec.exe).
+minor configurations if needed, and will also save the five needed 
+converters into the windows temp directory (flac.exe, lame.exe, oggenc.exe,
+oggdec.exe and faad.exe).
 
 
 Usage
