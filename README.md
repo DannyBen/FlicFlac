@@ -1,4 +1,4 @@
-FlicFlac 1.10
+FlicFlac 1.11
 ==================================================
 
 Tiny Portable Audio Converter (WAV FLAC MP3 OGG APE)  
@@ -128,6 +128,9 @@ Contributors
 
 Change Log
 --------------------------------------------------
+
+    2022 10 28 - 1.11
+      Updated: MP3 encoder (lame.exe) to version 3.100.1
 
     2020 04 17 - 1.10
       Added  : Support for AAC and M4A (input only) using faad
