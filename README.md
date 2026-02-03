@@ -1,6 +1,8 @@
 FlicFlac 1.11
 ==================================================
 
+![repocard](repocard.svg)
+
 Tiny Portable Audio Converter (WAV FLAC MP3 OGG APE)  
 
 Download binary: <http://sector-seven.com/software/flicflac>
